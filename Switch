@@ -1,0 +1,8 @@
+vlan 10
+ name <DATA>
+!
+interf rang gi1/0/1-10
+ description ******* DATA *******
+ switchp mode acce
+ swit acce vla 10
+
