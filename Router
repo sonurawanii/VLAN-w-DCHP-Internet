@@ -1,0 +1,26 @@
+ip access-list extended DATA_DENY
+deny   ip any 10.0.0.0 0.255.255.255
+deny   ip any 172.0.0.0 0.16.255.255
+deny   ip any 192.168.0.0 0.0.255.255
+permit ip 192.168.254.0 0.0.0.255 any
+permit ip any any
+
+interface GigabitEthernet0/1.10
+description ******* DATA VLAN *******
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+ip access-group DATA_DENY in
+ip flow ingress
+ip flow egress
+ip nat inside
+ip virtual-reassembly in
+
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+
+ip dhcp pool DATA
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1 
+ dns-server 8.8.8.8 8.8.4.4
+
+ip access-list extended NAT01
+ permit ip 192.168.10.0 0.0.0.255 any
