@@ -5,15 +5,29 @@ deny   ip any 192.168.0.0 0.0.255.255
 permit ip 192.168.254.0 0.0.0.255 any
 permit ip any any
 
+
+if--------Cisco 4321------
 interface GigabitEthernet0/1.10
 description ******* DATA VLAN *******
 encapsulation dot1Q 10
 ip address 192.168.10.1 255.255.255.0
-ip access-group DATA_DENY in
+ip access-group <NAT> in
 ip flow ingress
 ip flow egress
 ip nat inside
 ip virtual-reassembly in
+
+if--------Cisco 2901--------
+interface GigabitEthernet0/0/1.10
+ description ******** DATA ********
+ encapsulation dot1Q 10
+ ip flow monitor <NAME> input
+ ip flow monitor <NAME> output
+ ip address 192.168.10.1 255.255.255.0
+ ip nat inside
+ zone-member security inside
+ ip virtual-reassembly
+
 
 ip dhcp excluded-address 192.168.10.1 192.168.10.10
 
